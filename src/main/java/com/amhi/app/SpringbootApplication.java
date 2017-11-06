@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //@ComponentScan(basePackages="com.amhi.*")
 //@EnableAutoConfiguration
 //@Configuration
-public class SpringApp {
+public class SpringbootApplication{
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringApp.class, args);
+		SpringApplication.run(SpringbootApplication.class, args);
 	}
 }
