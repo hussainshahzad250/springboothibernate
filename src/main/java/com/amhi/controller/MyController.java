@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.amhi.model.Response;
 import com.amhi.model.User;
+import com.amhi.model.Users;
 import com.amhi.service.UserService;
 
 @RestController
@@ -125,6 +126,50 @@ public class MyController {
 		}
 
 		return new ResponseEntity<Object>(availUser, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = {"/user/{id}"}, method = RequestMethod.POST)
+	public ResponseEntity<Object> deletetUserByEmail(@PathVariable String id) {
+
+		Response response = null;
+		boolean deletetUserById = userService.deletetUserById(id);
+		
+
+		if (!deletetUserById) {
+			response = new Response();
+			response.setMessage("User Not Found");
+			return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+		}
+		response = new Response();
+		response.setMessage("Deleted");
+
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+	}
+	
+	
+	
+	
+	@RequestMapping(value = "/saveHeros", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> saveHeros(@RequestBody Users users) {
+		logger.debug("going to save Heros ....");
+
+		Response response = null;
+		
+
+		boolean saveUser = userService.saveHeros(users);
+		if (!saveUser) {
+			logger.info("Something Went Wrong");
+			response = new Response();
+			response.setMessage("Something Went Wrong");
+			return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+		}
+		logger.info("save Heros Successfully");
+		response = new Response();
+		response.setMessage("Register Successfully");
+
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+
 	}
 
 }

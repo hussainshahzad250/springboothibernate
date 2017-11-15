@@ -14,6 +14,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.amhi.model.User;
+import com.amhi.model.Users;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -108,6 +109,32 @@ public class UserDaoImpl implements UserDao {
 			return null;
 		}
 		return users;
+	}
+
+	@Override
+	public boolean deletetUserById(String id) {
+		Session session = sessionFactory.openSession();
+		try {
+			session.delete(id);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean saveHeros(Users users) {
+
+		try {
+			sessionFactory.openSession().save(users);
+			logger.info("saved Successfully");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("something went wrong ERROR :: " + e.getMessage());
+			System.out.println(e.getMessage());
+			return false;
+		}
+		return true;
 	}
 
 }

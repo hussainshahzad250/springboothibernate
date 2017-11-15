@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.amhi.dao.UserDao;
 import com.amhi.model.User;
+import com.amhi.model.Users;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -43,6 +44,17 @@ public class UserServiceImpl implements UserService {
 	public List<User> getUsers() {
 
 		return userDao.getUsers();
+	}
+
+	@Override
+	public boolean deletetUserById(String id) {
+		
+		return userDao.deletetUserById(id);
+	}
+
+	@Override
+	public boolean saveHeros(Users users) {
+		return userDao.saveHeros(users);
 	}
 
 }

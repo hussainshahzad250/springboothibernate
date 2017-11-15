@@ -3,6 +3,7 @@ package com.amhi.service;
 import java.util.List;
 
 import com.amhi.model.User;
+import com.amhi.model.Users;
 
 public interface UserService {
 
@@ -13,5 +14,11 @@ public interface UserService {
 	User login(String email, String password);
 
 	List<User> getUsers();
+
+	
+
+	boolean deletetUserById(String id);
+
+	boolean saveHeros(Users users);
 
 }
