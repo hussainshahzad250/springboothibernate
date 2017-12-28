@@ -21,6 +21,15 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amhi.model.Book;
 import com.amhi.model.Response;
 import com.amhi.service.BookService;
+import com.basho.riak.client.api.RiakClient;
+import com.basho.riak.client.api.cap.Quorum;
+import com.basho.riak.client.api.commands.kv.StoreValue;
+import com.basho.riak.client.api.commands.kv.StoreValue.Option;
+import com.basho.riak.client.core.query.Location;
+import com.basho.riak.client.core.query.Namespace;
+import com.basho.riak.client.core.query.RiakObject;
+import com.basho.riak.client.core.util.BinaryValue;
+import com.google.gson.Gson;
 
 @RestController
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
@@ -56,6 +65,47 @@ public class BookController {
 		}
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 
+	}
+	@RequestMapping(value = "/saveFile", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, headers = ("content-type=multipart/*"))
+	public ResponseEntity<Object> saveFile(
+			@RequestParam("file") MultipartFile image) {
+		Response response = null;
+		try {
+			logger.debug("going to Save ....");
+			byte[] bytes = image.getBytes();
+			
+			BufferedOutputStream stream = new BufferedOutputStream(
+					new FileOutputStream(new File(image.getOriginalFilename())));
+			stream.write(bytes);
+			stream.close();
+			
+			com.amhi.dto.Book book = new com.amhi.dto.Book();
+			book.setName(image.getOriginalFilename());
+			book.setImage(bytes);
+			
+			
+			RiakClient riakClient =RiakClient.newClient("172.16.27.9");
+			Gson javaObjectToJson = new Gson();
+			String finalJsonObject = javaObjectToJson
+					.toJson("shahzad");
+			Namespace namespace = new Namespace("discountBucketType", "BUCKET");
+			Location Newlocation = new Location(namespace, "1");
+			RiakObject riakObject = new RiakObject();
+			riakObject.setContentType("application/json").setValue(
+					BinaryValue.create(finalJsonObject));
+			StoreValue store = new StoreValue.Builder(riakObject)
+					.withLocation(Newlocation)
+					.withOption(Option.W, new Quorum(3)).build();
+			riakClient.execute(store);
+			System.out.println("Calculated Result saved Successfully");			
+			response = new Response();
+			response.setMessage("Register Successfully");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Object>(response, HttpStatus.OK);
+		
 	}
 	@RequestMapping(value = "/bookList", method = RequestMethod.GET)
 	public ResponseEntity<Object> getBooks() {
