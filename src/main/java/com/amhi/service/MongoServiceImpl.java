@@ -1,4 +1,4 @@
-package com.amhi.service;
+/*package com.amhi.service;
 
 import org.bson.Document;
 import org.springframework.stereotype.Service;
@@ -33,3 +33,4 @@ public class MongoServiceImpl implements MongoService {
 		return true;
 	}
 }
+*/

@@ -21,15 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amhi.model.Book;
 import com.amhi.model.Response;
 import com.amhi.service.BookService;
-import com.basho.riak.client.api.RiakClient;
-import com.basho.riak.client.api.cap.Quorum;
-import com.basho.riak.client.api.commands.kv.StoreValue;
-import com.basho.riak.client.api.commands.kv.StoreValue.Option;
-import com.basho.riak.client.core.query.Location;
-import com.basho.riak.client.core.query.Namespace;
-import com.basho.riak.client.core.query.RiakObject;
-import com.basho.riak.client.core.util.BinaryValue;
-import com.google.gson.Gson;
 
 @RestController
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
@@ -66,7 +57,7 @@ public class BookController {
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 
 	}
-	@RequestMapping(value = "/saveFile", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, headers = ("content-type=multipart/*"))
+	/*@RequestMapping(value = "/saveFile", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, headers = ("content-type=multipart/*"))
 	public ResponseEntity<Object> saveFile(
 			@RequestParam("file") MultipartFile image) {
 		Response response = null;
@@ -107,7 +98,7 @@ public class BookController {
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 		
 	}
-	@RequestMapping(value = "/bookList", method = RequestMethod.GET)
+*/	@RequestMapping(value = "/bookList", method = RequestMethod.GET)
 	public ResponseEntity<Object> getBooks() {
 		Response response = null;
 		List<Book> allBooks =null;
